@@ -154,8 +154,19 @@ class ExperimentBuilder(nn.Module):
         Complete the code in the block below to collect absolute mean of the gradients for each layer in all_grads with the             layer names in layers.
         """
         ########################################
-        
-        
+
+        for (pname, pvalue) in named_parameters:
+            #__import__("ipdb").set_trace()
+            if "bias" in pname:
+                continue
+            if "layer_dict" in pname:
+                split_name = pname.split('.')
+                layers.append('_'.join([split_name[1], split_name[3]]))
+            else:
+                layers.append(pname)
+            values = np.array(pvalue.grad.abs())
+            mean_gradient = values.sum() / values.size
+            all_grads.append(mean_gradient)
         ########################################
             
         
