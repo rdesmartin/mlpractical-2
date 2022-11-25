@@ -167,7 +167,7 @@ class ExperimentBuilder(nn.Module):
                 layers.append('_'.join([split_name[1], split_name[3]]))
             else:
                 layers.append(pname)
-            values = np.array(pvalue.grad.abs())
+            values = pvalue.grad.abs().detach().cpu().numpy()
             mean_gradient = values.sum() / values.size
             all_grads.append(mean_gradient)
         ########################################
